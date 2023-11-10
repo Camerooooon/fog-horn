@@ -1,9 +1,9 @@
-use poise::serenity_prelude::{VoiceState, GuildId, UserId};
+use poise::serenity_prelude::{VoiceState, UserId};
 use serenity::{async_trait, prelude::{Context, EventHandler}};
 
 pub struct Handler;
 
-const GUILD_ID: GuildId = poise::serenity_prelude::GuildId(718661117483810816);
+const GUILD_IDS: &'static [u64] = &[718661117483810816, 923782312087408700];
 const TARGET_ID: UserId = poise::serenity_prelude::UserId(398298273699594240);
 
 #[async_trait]
@@ -11,7 +11,14 @@ impl EventHandler for Handler {
 
     async fn voice_state_update(&self, ctx: Context, old_opt: Option<VoiceState>, new: VoiceState) {
  
-        if new.guild_id.unwrap_or(poise::serenity_prelude::GuildId(0)) != GUILD_ID { return; }
+        match new.guild_id {
+            Some(guild) => {
+                if !GUILD_IDS.contains(&guild.0) {
+                    return;
+
+                }},
+            None => {return},
+        }
 
         if new.user_id != TARGET_ID { return; }
 
