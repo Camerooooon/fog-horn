@@ -431,6 +431,7 @@ dependencies = [
  "anyhow",
  "dotenv",
  "poise",
+ "rand",
  "serenity",
  "songbird",
  "tokio",
